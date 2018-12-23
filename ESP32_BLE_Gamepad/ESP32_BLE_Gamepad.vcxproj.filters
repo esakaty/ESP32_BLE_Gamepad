@@ -16,6 +16,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ESP32_BLE_Gamepad.ino" />
+    <None Include="..\README.md" />
   </ItemGroup>
- 
+  <ItemGroup>
+    <ClInclude Include="__vm\.ESP32_BLE_Gamepad.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
