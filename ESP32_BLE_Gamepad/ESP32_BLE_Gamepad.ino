@@ -146,10 +146,10 @@ void setup() {
 
 void lotate(uint8_t x, uint8_t y, uint8_t z, uint8_t x1, uint8_t y1, uint8_t z1)
 {
-	uint8_t c[] = { 0x00, 0x00, x, y, z, x1, y1, z1,0,0,0,0};
+	uint8_t c[] = { 0x00, 0x00, x, y, z, x1, y1, z1,0,0,0};
 	input->setValue(c, sizeof(c));
 	input->notify();
-	delay(10);
+	delay(50);
 }
 
 void loop()
