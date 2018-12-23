@@ -89,19 +89,29 @@ void setup() {
 		0x81, 0x02,  /*     INPUT (Data,Var,Abs)           */
 
 		0x95, 0x01,  /*     REPORT_COUNT (1)               */
-		0x75, 0x02,  /*     REPORT_SIZE (2)                */
+		0x75, 0x02,  /*     REPORT_SIZE (2)                */	// 1データのサイズ？
 		0x81, 0x03,  /*     INPUT (Cnst)                   */
 		0xa1, 0x00,  /*     COLLECTION (Physical)          */
 		0x05, 0x01,  /*       USAGE_PAGE (Generic Desktop) */
-		0x09, 0x30,  /*       USAGE (X)                    */
-		0x09, 0x31,  /*       USAGE (Y)                    */
-		0x15, 0x81,  /*       LOGICAL_MINIMUM (-127)       */
-		0x25, 0x7F,  /*       LOGICAL_MAXIMUM (127)        */
-		0x75, 0x08,  /*       REPORT_SIZE (8)              */
-		0x95, 0x02,  /*       REPORT_COUNT (2)             */
+
+		0x09, 0x30,  /*       USAGE (X)                    */	// 1個目
+		0x09, 0x31,  /*       USAGE (Y)                    */	// 2個目
+		0x09, 0x32,  /*       USAGE (Z)                    */	// 3個目
+
+		0x09, 0x33,  /*       USAGE (Rx)                   */	// 4個目
+		0x09, 0x34,  /*       USAGE (Ry)                   */	// 5個目
+		0x09, 0x35,  /*       USAGE (Rz)                   */	// 6個目
+
+		0x09, 0x36,  /*       (Slider)Slider               */
+		0x09, 0x37,  /*       (Dial)Slider                 */
+		0x09, 0x38,  /*       (Wheel)Slider                */
+
+		0x15, 0x81,  /*       LOGICAL_MINIMUM (-127)       */	// -127
+		0x25, 0x7F,  /*       LOGICAL_MAXIMUM (127)        */	// +127
+		0x75, 0x08,  /*       REPORT_SIZE (8)              */	// 1データのビット数
+		0x95, 0x09,  /*       REPORT_COUNT (2)             */	// データの個数
 		0x81, 0x02,  /*       INPUT (Data,Var,Abs)         */
 		0xc0,        /*     END_COLLECTION                 */
-
 		0xc0,        /*   END_COLLECTION                   */
 		0xc0         /* END_COLLECTION                     */
 	};
@@ -134,38 +144,26 @@ void setup() {
 	delay(5000);
 }
 
-void lotate(uint8_t x, uint8_t y)
+void lotate(uint8_t x, uint8_t y, uint8_t z, uint8_t x1, uint8_t y1, uint8_t z1)
 {
-	uint8_t c[] = { 0x00, 0x00, x, y };
+	uint8_t c[] = { 0x00, 0x00, x, y, z, x1, y1, z1,0,0,0,0};
 	input->setValue(c, sizeof(c));
 	input->notify();
+	delay(10);
 }
 
-void loop() {
+void loop()
+{
+	static uint8_t count = 0;
 
 	// put your main code here, to run repeatedly:
-	lotate(64, 64);
-	delay(100);
-
-	lotate(90, 0);
-	delay(100);
-
-	lotate(64, -64);
-	delay(100);
-
-	lotate(0, -90);
-	delay(100);
-
-	lotate(-64, -64);
-	delay(100);
-
-	lotate(-90, 0);
-	delay(100);
-
-	lotate(-64, 64);
-	delay(100);
-
-	lotate(0, 90);
-	delay(100);
+	lotate( 64,  64,  0,  0,-50, count);	count++;
+	lotate( 90,   0, 10, 80,-60, count);	count++;
+	lotate( 64, -64, 20, 90,-70, count);	count++;
+	lotate(  0, -90, 30,  0,-80, count);	count++;
+	lotate(-64, -64, 40,-10,-90, count);	count++;
+	lotate(-90,   0, 50,-20,  0, count);	count++;
+	lotate(-64,  64, 60,-30, 10, count);	count++;
+	lotate(  0,  90, 70,-40, 20, count);	count++;
 
 }
