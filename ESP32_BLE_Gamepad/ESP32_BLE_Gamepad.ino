@@ -77,6 +77,7 @@ void setup() {
 		0x09, 0x05,  /* USAGE (Game Pad)                   */
 		0xa1, 0x01,  /* COLLECTION (Application)           */
 		0xa1, 0x03,  /*   COLLECTION (Report)              */
+
 		0x85, 0x01,  /*     REPORT_ID (1)                  */
 		0x05, 0x09,  /*     USAGE_PAGE (Button)            */
 		0x19, 0x01,  /*     USAGE_MINIMUM (Button 1)       */
@@ -86,6 +87,7 @@ void setup() {
 		0x95, 0x0e,  /*     REPORT_COUNT (14)              */
 		0x75, 0x01,  /*     REPORT_SIZE (1)                */
 		0x81, 0x02,  /*     INPUT (Data,Var,Abs)           */
+
 		0x95, 0x01,  /*     REPORT_COUNT (1)               */
 		0x75, 0x02,  /*     REPORT_SIZE (2)                */
 		0x81, 0x03,  /*     INPUT (Cnst)                   */
@@ -93,12 +95,13 @@ void setup() {
 		0x05, 0x01,  /*       USAGE_PAGE (Generic Desktop) */
 		0x09, 0x30,  /*       USAGE (X)                    */
 		0x09, 0x31,  /*       USAGE (Y)                    */
-		0x15, 0x00,  /*       LOGICAL_MINIMUM (0)          */
-		0x25, 0x64,  /*       LOGICAL_MAXIMUM (100)        */
+		0x15, 0x81,  /*       LOGICAL_MINIMUM (-127)       */
+		0x25, 0x7F,  /*       LOGICAL_MAXIMUM (127)        */
 		0x75, 0x08,  /*       REPORT_SIZE (8)              */
 		0x95, 0x02,  /*       REPORT_COUNT (2)             */
 		0x81, 0x02,  /*       INPUT (Data,Var,Abs)         */
 		0xc0,        /*     END_COLLECTION                 */
+
 		0xc0,        /*   END_COLLECTION                   */
 		0xc0         /* END_COLLECTION                     */
 	};
@@ -131,19 +134,38 @@ void setup() {
 	delay(5000);
 }
 
+void lotate(uint8_t x, uint8_t y)
+{
+	uint8_t c[] = { 0x00, 0x00, x, y };
+	input->setValue(c, sizeof(c));
+	input->notify();
+}
+
 void loop() {
+
 	// put your main code here, to run repeatedly:
-	uint8_t a[] = { 0x03, 0x03, 0x03, 0x03 };
+	lotate(64, 64);
+	delay(100);
 
-	input->setValue(a, sizeof(a));
-	input->notify();
+	lotate(90, 0);
+	delay(100);
 
-	delay(2000);
+	lotate(64, -64);
+	delay(100);
 
-	uint8_t b[] = { 0x00, 0x00, 0x00, 0x00 };
+	lotate(0, -90);
+	delay(100);
 
-	input->setValue(b, sizeof(b));
-	input->notify();
+	lotate(-64, -64);
+	delay(100);
 
-	delay(2000);
+	lotate(-90, 0);
+	delay(100);
+
+	lotate(-64, 64);
+	delay(100);
+
+	lotate(0, 90);
+	delay(100);
+
 }
