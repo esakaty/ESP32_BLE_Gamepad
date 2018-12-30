@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+#include <Wire.h>
+
 /**
  * Create a new BLE server.
  */
@@ -11,6 +13,7 @@
 #include "BLEUtils.h"
 #include "BLE2902.h"
 #include "BLEHIDDevice.h"
+
 
 static BLEHIDDevice* hid;
 BLECharacteristic* input;
@@ -144,9 +147,9 @@ void setup() {
 	delay(5000);
 }
 
-void lotate(uint8_t x, uint8_t y, uint8_t z, uint8_t x1, uint8_t y1, uint8_t z1)
+void lotate(uint8_t x0, uint8_t y0, uint8_t z0, uint8_t x1, uint8_t y1, uint8_t z1, uint8_t x2, uint8_t y2, uint8_t z2)
 {
-	uint8_t c[] = { 0x00, 0x00, x, y, z, x1, y1, z1,0,0,0};
+	uint8_t c[] = { 0x00, 0x00, x0, y0, z0, x1, y1, z1, x2, y2, z2 };
 	input->setValue(c, sizeof(c));
 	input->notify();
 	delay(50);
@@ -157,13 +160,13 @@ void loop()
 	static uint8_t count = 0;
 
 	// put your main code here, to run repeatedly:
-	lotate( 64,  64,  0,  0,-50, count);	count++;
-	lotate( 90,   0, 10, 80,-60, count);	count++;
-	lotate( 64, -64, 20, 90,-70, count);	count++;
-	lotate(  0, -90, 30,  0,-80, count);	count++;
-	lotate(-64, -64, 40,-10,-90, count);	count++;
-	lotate(-90,   0, 50,-20,  0, count);	count++;
-	lotate(-64,  64, 60,-30, 10, count);	count++;
-	lotate(  0,  90, 70,-40, 20, count);	count++;
+	lotate( 64,  64,  0,  0,  0,  0, count, count, count);	count++;
+	lotate( 90,   0,  0,  0,  0,  0, count, count, count);	count++;
+	lotate( 64, -64,  0,  0,  0,  0, count, count, count);	count++;
+	lotate(  0, -90,  0,  0,  0,  0, count, count, count);	count++;
+	lotate(-64, -64,  0,  0,  0,  0, count, count, count);	count++;
+	lotate(-90,   0,  0,  0,  0,  0, count, count, count);	count++;
+	lotate(-64,  64,  0,  0,  0,  0, count, count, count);	count++;
+	lotate(  0,  90,  0,  0,  0,  0, count, count, count);	count++;
 
 }
